@@ -1,0 +1,59 @@
+.team-edit-icons {
+	
+}
+.team-edit-icons a:hover {
+	text-decoration: none;
+}
+.small-input {
+	height: 20px !important;
+	font-size: 12px !important;
+	line-height: 20px !important;
+}
+.relationship-direction {
+	text-align: center;
+	height: 34px;
+	line-height: 34px;
+}
+.select2-container {
+	width: 100%;
+}
+.relationship-row {
+	margin: 25px;
+}
+.relationship-row button {
+	width: 100%;
+}
+
+.death-direction {
+	text-align: center;
+	height: 34px;
+	line-height: 34px;
+}
+.death-row {
+	margin: 25px;
+}
+.death-row button {
+	width: 100%;
+}
+
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 270px;
+}
+
+.datepicker.dropdown-menu button {
+  outline: 0;
+  border: 0;
+}
+
+.datepicker.dropdown-menu tbody {
+  height: 180px;
+}
+
+.datepicker.dropdown-menu tbody button {
+  padding: 6px;
+}
+
+.datepicker.dropdown-menu.datepicker-mode-1 tbody button,.datepicker.dropdown-menu.datepicker-mode-2 tbody button {
+  height: 65px;
+}

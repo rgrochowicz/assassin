@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="adminApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Assassin admin">
+    <meta name="author" content="Admin for assassin">
+
+    <link rel="shortcut icon" href="http://seniorassassin.voorhees4thfloor.com/img/sniper_rifle.png" type="image/png">
+
+    <title>Senior Assassin Admin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-top" role="navigation" bs-navbar>
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Admin</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li data-match-route="/teams"><a href="#teams">Edit Teams</a></li>
+            <li data-match-route="/relationships"><a href="#relationships">Manage Relationships</a></li>
+            <li data-match-route="/deaths"><a href="#deaths">Edit Deaths</a></li>
+            <li data-match-route="/random"><a href="#random">Random Assignment</a></li>
+            <li data-match-route="/control"><a href="#control">Control</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div ng-view></div>
+
+    </div><!-- /.container -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-sanitize.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-resource.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>
+    <script src="js/angular-strap.js"></script>
+    <script src="js/angular-strap.tpl.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+<h1>Random Assignment</h1>
+<button class="btn btn-default" ng-click="randomize()">
+	<span class="glyphicon glyphicon-refresh"></span> Reshuffle
+</button>
+
+<table class="table">
+	<tr>
+		<th class="text-right">This Team</th>
+		<th class="text-center">Targets</th>
+		<th>This Team</th>
+	</tr>
+	<tr ng-repeat="pair in pairs">
+		<td class="text-right">{{pair.killer.name}}</td>
+		<td>&nbsp;</td>
+		<td>{{pair.target.name}}</td>
+	</tr>
+</table>

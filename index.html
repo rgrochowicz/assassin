@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Assassin">
+    <meta name="author" content="Voorhees assassin">
+    <meta property="og:title" content="Voorhees Senior Assassin" />
+    <meta property="og:url" content="http://seniorassassin.voorhees4thfloor.com" />
+    <meta property="og:description" content="Voorhees Senior Assassin teams, graphs, deaths, and statistics" />
+    <meta property="og:image" content="http://seniorassassin.voorhees4thfloor.com/img/sniper_rifle_black.png" />
+    <link rel="shortcut icon" href="http://seniorassassin.voorhees4thfloor.com/img/sniper_rifle.png" type="image/png">
+
+    <!-- Icon from here: http://findicons.com/icon/557739/sniper_rifle -->
+
+    <title>Senior Assassin</title>
+
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-50652630-1', 'voorhees4thfloor.com');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Senior Assassin</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#rules">Rules</a></li>
+            <li><a href="#teams">Teams</a></li>
+            <li><a href="#recent-deaths">Recent Deaths</a></li>
+            <li><a href="#rankings">Rankings</a></li>
+            <li><a href="#graphs">Graphs</a></li>
+            <li><a href="#outcomes">Outcomes</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row" id="rules">
+        <h3>Rules</h3>
+        <div class="col-md-12">
+          <p>Welcome to Voorhees senior assassin!</p>
+          <p>Here are some rules:</p>
+          <ol>
+            <li>NO eliminations at school (this includes school events, sports, clubs, parking lot, etc.) or parties</li>
+            <li>NO kills at the target's work place</li>
+            <li>NO breaking into the persons house and eliminating them (even if you are welcome over at any time or know how to get in)</li>
+            <li>All kills must be confirmed by either Dylan or Cody; both the killer and target must agree that it was fair. (we will be playing and we will be fair as well)</li>
+            <li>Any rule breaking will result in elimination of offender</li>
+            <li>This game is meant for pure fun so if you're going to cheat just say you do not want to join</li>
+            <li>Use your best judgement with this game; do not break any laws trying to shoot someone with a toy gun or get yourself in any trouble</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="row" id="teams">
+        <h3>Teams</h3>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#teams" href="#teams-expand">
+                Show/hide teams
+              </a>
+            </h4>
+          </div>
+          <div id="teams-expand" class="panel-collapse collapse">
+            <div class="panel-body" id="teams-part">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="recent-deaths">
+        <h3>Recent Deaths</h3>
+        <div class="col-md-12">
+          <p>
+            <a href="https://docs.google.com/forms/d/1CSZfBCBIrZgyfxvmgLD_as34D7PWqm7U4aQOAtXzZ5Q/viewform?usp=send_form">
+              Have a death to record? Click here!
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="row" id="rankings">
+        <h3>Rankings</h3>
+        <div class="col-md-6">
+          <table class="table" id="top-table">
+            <tr>
+              <th colspan="2">Highest # of Kills</th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th># killed</th>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6">
+          <table class="table" id="bottom-table">
+            <tr>
+              <th colspan="2">Lowest # of Kills</th>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <th># killed</th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="row" id="graphs">
+        <h3>Graphs</h3>
+        <div class="col-md-6" id="member-graph">
+          <h4 class="text-center">Dead vs. alive</h4>
+        </div>
+        <div class="col-md-6" id="team-graph">
+          <h4 class="text-center">Distribution of members remaining per team</h4> 
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+    <div class="container svg-art" id="outcomes">
+      <h3>Outcomes</h3>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+
+
+  </body>
+</html>

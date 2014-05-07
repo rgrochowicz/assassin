@@ -1,0 +1,62 @@
+<h2>Teams</h2>
+<div class="row">
+	<div class="col-md-6" ng-repeat="(teamIndex, team) in teams">
+		<table class="table team-table">
+			<tr>
+				<th ng-hide="team.editing">
+					{{team.name}}
+					<span class="pull-right team-edit-icons">
+						<a href="javascript:void(0);" ng-click="team.editing=true">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a href="javascript:void(0);" ng-really-message="Are you sure you want to delete this team?" ng-really-click="deleteTeam(team, teamIndex)">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+					</span>
+				</th>
+				<th ng-show="team.editing">
+					<input type="text" class="form-control small-input" ng-model="team.name" focus-me="team.editing" ng-blur="updateTeam(team)" ui-keypress="{13:'team.editing=false'}">
+				</th>
+			</tr>
+			<tr ng-repeat="(memberIndex, member) in team.members">
+				<td ng-hide="member.editing">
+					{{member.name}}
+					<span class="pull-right team-edit-icons">
+						<a href="javascript:void(0);" ng-click="member.editing=true">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</a>
+						<a href="javascript:void(0);" ng-really-message="Are you sure you want to delete this member?" ng-really-click="deleteMember(team, memberIndex)">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
+					</span>
+				</td>
+				<td ng-show="member.editing">
+					<input type="text" class="form-control small-input" ng-model="member.name" focus-me="member.editing" ng-blur="updateMember(member)" ui-keypress="{13:'member.editing=false'}">
+				</td>
+			</tr>
+			<tr ng-repeat="member in [0, 1, 2, 3].slice(team.members.length)">
+				<td>
+					<a href="javascript:void(0)" ng-click="newMember(team)">
+						<span class="glyphicon glyphicon-plus"></span> Add a member
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<table class="table team-table">
+			<tr>
+				<th>
+					<a href="javascript:void(0)" ng-click="newTeam()">
+						<span class="glyphicon glyphicon-plus"></span> Add a team
+					</a>
+				</th>
+			</tr>
+			<tr ng-repeat="member in [0, 1, 2, 3]">
+				<td>
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
