@@ -40,11 +40,13 @@ h2 {
 }
 #member-graph, #team-graph {
   height: 333px;
+  margin-top: 40px;
 }
 
 
 .bg-info {
   padding: 15px;
+  margin: 5px;
 }
 .invert {
   background: #1f1f1f;
@@ -145,4 +147,8 @@ path.arc {
 }
 .y.axis {
   font-size: 20px;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
