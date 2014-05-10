@@ -336,8 +336,8 @@ app.factory('Graphs', [function() {
 	    svg.append("defs").append("marker")
 	      .attr("id", "arrow")
 	      .attr("viewBox", "0 -5 10 10")
-	      .attr("markerWidth", 2)
-	      .attr("markerHeight", 2)
+	      .attr("markerWidth", 4)
+	      .attr("markerHeight", 4)
 	      .attr("refX", 2.1)
 	      .attr("orient", "auto")
 	    .append("path")
@@ -439,10 +439,10 @@ app.factory('Graphs', [function() {
 		    .attr("preserveAspectRatio", "xMidYMid");
 
 	    svg.append("defs").append("marker")
-	      .attr("id", "arrow")
+	      .attr("id", "arrowsm")
 	      .attr("viewBox", "0 -5 10 10")
-	      .attr("markerWidth", 4)
-	      .attr("markerHeight", 4)
+	      .attr("markerWidth", 2)
+	      .attr("markerHeight", 2)
 	      .attr("refX", 2.1)
 	      .attr("orient", "auto")
 	    .append("path")
@@ -458,7 +458,7 @@ app.factory('Graphs', [function() {
 		.enter().append("line")
 		  .attr("class", "link")
 		  .style("stroke-width", "2")
-	      .attr("marker-start", "url(#arrow)");
+	      .attr("marker-start", "url(#arrowsm)");
 
 		var nodeGroup = svg.selectAll(".node")
 		  .data(teams).enter().append("g")
