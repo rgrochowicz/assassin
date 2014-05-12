@@ -1,1 +1,11 @@
 <h1>Control</h1>
+
+<div class="row death-row">
+	<div class="col-md-4" ng-repeat="i in teams.slice((currentPage-1)*10,currentPage*10)">
+		{{i.name}}
+		<select class="nya-selectpicker" data-live-search="true" ng-model="myModel" multiple ng-options="member.name group by team_id_to_name[member.team_id] for member in flattened">
+      	</select>
+	</div>
+	<pagination total-items="numItems" ng-model="currentPage" max-size="5" class="pagination-sm" boundary-links="true"></pagination>
+
+</div>

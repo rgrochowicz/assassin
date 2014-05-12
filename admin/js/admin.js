@@ -4,8 +4,12 @@ var adminApp = angular.module('adminApp', [
 	'ngRoute',
 	'adminControllers',
 	'ui',
-	'mgcrea.ngStrap',
-	'ngResource'
+	'ngResource',
+	'mgcrea.ngStrap.navbar',
+	'mgcrea.ngStrap.datepicker',
+	'ui.bootstrap.tpls',
+	'ui.bootstrap.pagination',
+	'nya.bootstrap.select'
 ]);
 
 adminApp.directive('focusMe', function($timeout, $parse) {
@@ -196,6 +200,25 @@ adminControllers.controller('DeathsCtrl', ['$scope', '$http', 'Resources', '$tim
 	function($scope, $http, Resources, $timeout) {
 		$scope.teams = Resources.Team.query();
 		$scope.deaths = Resources.Death.query();
+		$scope.flattened = [];
+		$scope.team_id_to_name = {};
+		$scope.numItems = 0;
+		$scope.itemsPerPage = 5;
+		$scope.currentPage = 1;
+
+		$scope.teams.$promise.then(function() {
+			$scope.teams.forEach(function(e, i) {
+				$scope.team_id_to_name[e.id] = e.name;
+				e.members.forEach(function(mE, mI) {
+					$scope.flattened.push(mE);
+				});
+			});
+		});
+
+		$scope.deaths.$promise.then(function() {
+			$scope.numItems = $scope.deaths.length;
+			$scope.currentPage = Math.ceil(($scope.deaths.length / $scope.itemsPerPage));
+		});
 
 		$scope.flatten = function() {
 			var results = [];
@@ -219,17 +242,23 @@ adminControllers.controller('DeathsCtrl', ['$scope', '$http', 'Resources', '$tim
 
 		$scope.newDeath = function() {
 			var death = new Resources.Death({killers: [], targets: [], date: null});
-			death.$save();
 			$scope.deaths.push(death);
+			death.$save(function() {
+				$scope.currentPage = Math.ceil(($scope.deaths.length / $scope.itemsPerPage));
+				$scope.numItems = $scope.deaths.length;
+			});
 		}
 
 		$scope.updateDeath = function(death) {
 			death.$update();
 		}
 
-		$scope.deleteDeath = function(death, deathIndex) {
-			$scope.deaths.splice(deathIndex, 1);
-			death.$delete();
+		$scope.deleteDeath = function(death, deathIndex, currentPage) {
+			$scope.deaths.splice((currentPage-1)*$scope.itemsPerPage + deathIndex, 1);
+			death.$delete(function() {
+				$scope.currentPage = Math.ceil(($scope.deaths.length / $scope.itemsPerPage));
+				$scope.numItems = $scope.deaths.length;
+			});
 		}
 
 
@@ -263,9 +292,21 @@ adminControllers.controller('RandomCtrl', ['$scope', '$http', 'Resources', '$tim
 		}
 
 	}])
-adminControllers.controller('ControlCtrl', ['$scope', '$http',
-	function($scope, $http) {
-		$http.get('/teams.json').success(function(data) {
-			$scope.teams = data
+adminControllers.controller('ControlCtrl', ['$scope', '$http', 'Resources', '$timeout',
+	function($scope, $http, Resources, $timeout) {
+		$scope.teams = Resources.Team.query();
+		$scope.flattened = [];
+		$scope.team_id_to_name = {};
+		$scope.numItems = 0;
+		$scope.currentPage = 1;
+
+		$scope.teams.$promise.then(function() {
+			$scope.numItems = $scope.teams.length;
+			$scope.teams.forEach(function(e, i) {
+				$scope.team_id_to_name[e.id] = e.name;
+				e.members.forEach(function(mE, mI) {
+					$scope.flattened.push(mE);
+				});
+			});
 		});
 	}])

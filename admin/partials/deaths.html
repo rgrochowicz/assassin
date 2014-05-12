@@ -1,18 +1,14 @@
 <h1>Deaths</h1>
 
-<div class="row death-row" ng-repeat="(deathIndex, death) in deaths">
+<div class="row death-row" ng-repeat="(deathIndex, death) in deaths.slice((currentPage-1)*itemsPerPage,currentPage*itemsPerPage)">
 	<div class="col-md-4">
-		<button type="button" class="btn btn-default" ng-model="death.killers" data-multiple="1" ng-change="updateDeath(death)" ng-options="member.name for member in flatten()" placeholder="Choose the killers" bs-select>
-		  Action <span class="caret"></span>
-		</button>
+		<select class="nya-selectpicker" data-live-search="true" data-width="100%" ng-model="death.killers" multiple ng-change="updateDeath(death)" ng-options="member.name group by team_id_to_name[member.team_id] for member in flattened" title="Choose the killers"></select>
 	</div>
 	<div class="col-md-1 death-direction">
 		<span class="glyphicon glyphicon-arrow-right"></span>
 	</div>
 	<div class="col-md-4">
-		<button type="button" class="btn btn-default" placeholder="Choose the targets" ng-model="death.targets" data-multiple="1" ng-change="updateDeath(death)" ng-options="member.name for member in flatten()" bs-select>
-		  Action <span class="caret"></span>
-		</button>
+		<select class="nya-selectpicker" data-live-search="true" data-width="100%" ng-model="death.targets" multiple ng-change="updateDeath(death)" ng-options="member.name group by team_id_to_name[member.team_id] for member in flattened" title="Choose the targets"></select>
 	</div>
 	<div class="col-md-2">
 
@@ -23,7 +19,7 @@
 		</form>
 	</div>
 	<div class="col-md-1 death-direction">
-		<a href="javascript:void(0)" ng-really-message="Are you sure you want to delete this death?" ng-really-click="deleteDeath(death, deathIndex)">
+		<a href="javascript:void(0)" ng-really-message="Are you sure you want to delete this death?" ng-really-click="deleteDeath(death, deathIndex, currentPage)">
 			<span class="glyphicon glyphicon-trash"></span>
 		</a>
 	</div>
@@ -34,5 +30,10 @@
 		<a href="javascript:void(0)" ng-click="newDeath()">
 			<span class="glyphicon glyphicon-plus"></span> Add a new death
 		</a>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<pagination total-items="numItems" ng-model="currentPage" max-size="5" items-per-page="itemsPerPage" class="pagination-sm" boundary-links="true"></pagination>
 	</div>
 </div>

@@ -21,7 +21,7 @@ angular.module('nya.bootstrap.select',[])
         var valuesFn, match, track, groupBy;
         if(optionsExp && (match = optionsExp.match(NG_OPTIONS_REGEXP))) {
           groupBy = match[3];
-          console.log(optionsExp, groupBy);
+          
           valuesFn = $parse(match[7]);
           track = match[8];
         }
