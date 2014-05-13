@@ -530,7 +530,7 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
 		$scope.members = [];
 		$scope.sanitizedTeams = [];
 
-		$scope.endTimeString = "May 14, 2014 11:59:59 EST";
+		$scope.endTimeString = "May 14, 2014 11:59:59 PM EDT";
 		$scope.endTime = Date.parse($scope.endTimeString);
 
 		$scope.getPromise = $q.all([$scope.teams.$promise, $scope.deaths.$promise]).then(function() {
