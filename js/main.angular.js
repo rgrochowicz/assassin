@@ -40,12 +40,9 @@ function getPath (value, seen, keys) {
   return '~' + path.join('.');
 }
 
-function stringify(obj, fn, spaces, decycle) {
+var stringify = _.memoize(function (obj, fn, spaces, decycle) {
   return JSON.stringify(obj, getSerialize(fn, decycle), spaces);
-}
-
-
-stringify = _.memoize(stringify);
+})
 
 //returns a map with the id as a key and the object as the value
 function idLookup(arr) {
