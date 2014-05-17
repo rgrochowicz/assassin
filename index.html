@@ -121,10 +121,22 @@
                 <div class="col-md-6" ng-repeat="team in teamsRow">
                   <table class="table">
                     <tr>
-                      <th>{{team.name}}</th>
+                      <th colspan="2">{{team.name}}</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Kills: {{team.kills.length || 0}}</strong>
+                      </td>
+                      <td>
+                        <strong>Deaths: {{team.killed.length || 0}}</strong>
+                      </td>
                     </tr>
                     <tr ng-repeat="member in team.members" ng-class="{danger: member.killers.length, success: !member.killers.length}">
-                      <td>{{member.name}}</td>
+                      <td colspan="2">
+                        <span data-trigger="hover" data-html="true" data-placement="right" bs-tooltip="getTooltip(member)">
+                          {{member.name}}
+                        </span>
+                      </td>
                     </tr>
                   </table>
                 </div>
@@ -216,6 +228,7 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-resource.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.7/angular-sanitize.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-busy/4.0.2/angular-busy.js"></script>
     <script type="text/javascript" src="js/angular-strap.js"></script>
     <script type="text/javascript" src="js/angular-strap.tpl.js"></script>

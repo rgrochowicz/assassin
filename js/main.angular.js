@@ -4,7 +4,8 @@ var app = angular.module('assassinApp', [
 	'mgcrea.ngStrap',
 	'assassinAppControllers',
 	'timer',
-	'cgBusy'
+	'cgBusy',
+	'ngSanitize'
 ]);
 
 function getSerialize (fn, decycle) {
@@ -78,7 +79,6 @@ app.factory('Resources', ['$resource', function($resource) {
 						e.teams[mI] = new Team(mE);
 					});
 					e.end_time_parsed = Date.parse(e.end_time);
-					console.log(e);
 				});
 				return objs;
 			}
@@ -544,6 +544,13 @@ app.filter('partition', function() {
 	return filter;
 });
 
+app.filter('nameJoin', function() {
+	return function(input) {
+
+		return 
+	}
+})
+
 var appControllers = angular.module('assassinAppControllers', []);
 
 appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
@@ -573,6 +580,26 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
 		$scope.$watch("currentRound", function(newVal, oldVal) {
 			if(newVal) $scope.refreshData();
 		});
+
+		$scope.getTooltip = function(member) {
+			var killers = _(member.killers).pluck('name').join(', ');
+			var kills = _(member.kills).pluck('name').join(', ');
+			var result = [];
+			if(kills) {
+				result.push("Kills: " + kills)
+			}
+			if(killers) {
+				result.push("Killed by: " + killers);
+			}
+
+			if(result.length > 0) {
+				return result.join("<br />")
+			} else {
+				return null;
+			}
+
+			
+		}
 
 		$scope.refreshData = function() {
 
