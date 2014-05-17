@@ -63,19 +63,27 @@
       <div class="row" id="welcome">
         <div class="col-md-12">
           <h3>Welcome to Voorhees senior assassin!</h3>
-          <div class="alert alert-warning alert-dismissable">
+          <div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            <strong>Find out the truth about the 4th floor at: </strong><a href="http://voorhees4thfloor.com">voorhees4thfloor.com</a>
+            <strong>Updates in progress. Things may be broken.</strong>
           </div>
         </div>
       </div>
 
       <div class="row" id="currents">
         <div class="col-md-4">
-          <h3>Current Round: 1</h3>
+          <h3>Round: 
+            <select ng-model="currentRound" ng-cloak ng-change="selectRound()" ng-options="round as round.name for round in rounds">
+            </select>
+          </h3>
         </div>
         <div class="col-md-8">
-          <h3>Time Remaining: <timer title="{{endTimeString}}" end-time="endTime" ng-cloak>{{days}} day{{daysS}}, {{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer></h3>
+          <h3 ng-show="currentDate > currentRound.end_time_parsed" ng-cloak>
+            This round ended at: {{currentRound.end_time | date:'medium'}}
+          </h3>
+          <h3 ng-hide="currentDate > currentRound.end_time_parsed" ng-cloak>Time Remaining: 
+            <timer title="{{currentRound.end_time | date:'medium'}}" end-time="currentRound.end_time_parsed">{{days}} day{{daysS}}, {{hours}} hour{{hoursS}}, {{minutes}} minute{{minutesS}}, {{seconds}} second{{secondsS}}.</timer>
+          </h3>
         </div>
       </div>
 

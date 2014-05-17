@@ -7,9 +7,11 @@ var adminApp = angular.module('adminApp', [
 	'ngResource',
 	'mgcrea.ngStrap.navbar',
 	'mgcrea.ngStrap.datepicker',
+	'mgcrea.ngStrap.timepicker',
 	'ui.bootstrap.tpls',
 	'ui.bootstrap.pagination',
-	'nya.bootstrap.select'
+	'nya.bootstrap.select',
+	'ui.multiselect'
 ]);
 
 adminApp.directive('focusMe', function($timeout, $parse) {
@@ -66,6 +68,7 @@ adminApp.factory('Resources', ['$resource', function($resource) {
 					});
 					delete e.relationship_source;
 					delete e.relationship_target;
+					delete e.round_teams;
 				});
 				return objs;
 			}
@@ -91,20 +94,45 @@ adminApp.factory('Resources', ['$resource', function($resource) {
 			headers: {'Content-Type': 'application/json'}
 		}
 	});
-	var Death = $resource('/api/death/:id', {id:'@id'}, {
+	var Round = $resource('/api/round/:id', {id:'@id'}, {
 		query: {
 			isArray: true,
 			transformResponse: function(data, headersGetter) {
 				var objs = JSON.parse(data).objects;
+				objs.forEach(function(e, i) {
+					e.teams.forEach(function(mE, mI) {
+						e.teams[mI] = new Team(mE);
+					});
+				});
 				return objs;
 			}
 		},
 		update: {method: 'PUT', headers: {'Content-Type': 'application/json'}}
 	});
+	var Death = $resource('/api/death/:id', {id:'@id'}, {
+		query: {
+			isArray: true,
+			transformResponse: function(data, headersGetter) {
+				var objs = JSON.parse(data).objects;
+				objs.forEach(function(e, i) {
+					delete e.round_deaths;
+				});
+				return objs;
+			}
+		},
+		update: {method: 'PUT', headers: {'Content-Type': 'application/json'}}
+	});
+	Death.prototype.toString = function() {
+			var date = new Date(this.date);
+			var dateString = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+
+			return _(this.killers).pluck('name').join(', ') + ' killed ' + _(this.targets).pluck('name').join(', ') + ' on ' + dateString;
+	}
 	return {
 		Member: Member,
 		Team: Team,
 		Relationship: Relationship,
+		Round: Round,
 		Death: Death
 	}
 }]);
@@ -123,6 +151,10 @@ adminApp.config(['$routeProvider', '$sceProvider',
 			when('/deaths', {
 				templateUrl: 'partials/deaths.html',
 				controller: 'DeathsCtrl'
+			}).
+			when('/rounds', {
+				templateUrl: 'partials/rounds.html',
+				controller: 'RoundsCtrl'
 			}).
 			when('/random', {
 				templateUrl: 'partials/random.html',
@@ -263,6 +295,7 @@ adminControllers.controller('DeathsCtrl', ['$scope', '$http', 'Resources', '$tim
 
 
 	}])
+
 adminControllers.controller('RandomCtrl', ['$scope', '$http', 'Resources', '$timeout',
 	function($scope, $http, Resources, $timeout) {
 		$scope.teams = Resources.Team.query(function() {
@@ -292,6 +325,36 @@ adminControllers.controller('RandomCtrl', ['$scope', '$http', 'Resources', '$tim
 		}
 
 	}])
+
+adminControllers.controller('RoundsCtrl', ['$scope', '$http', 'Resources', '$timeout',
+	function($scope, $http, Resources, $timeout) {
+
+		$scope.rounds = Resources.Round.query();
+		$scope.teams = Resources.Team.query();
+		$scope.deaths = Resources.Death.query();
+
+		$scope.newRound = function() {
+			var round = new Resources.Round();
+			round.$save();
+			$scope.rounds.push(round);
+		}
+
+		$scope.updateRound = function(round) {
+			console.log(round);
+			round.$update();
+		}
+		$scope.deleteRound = function(round, roundIndex) {
+			round.$delete();
+			$scope.rounds.splice(roundIndex, 1);
+		}
+		$scope.fancyDeath = function(death) {
+			var date = new Date(death.date);
+			var dateString = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+
+			return _(death.killers).pluck('name').join(', ') + ' killed ' + _(death.targets).pluck('name').join(', ') + ' on ' + dateString;
+		}
+	}])
+
 adminControllers.controller('ControlCtrl', ['$scope', '$http', 'Resources', '$timeout',
 	function($scope, $http, Resources, $timeout) {
 		$scope.teams = Resources.Team.query();

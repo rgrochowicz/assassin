@@ -1,0 +1,37 @@
+<h1>Rounds</h1>
+
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Ending Time</th>
+		<th>Teams</th>
+		<th>Deaths</th>
+	</tr>
+	<tr ng-repeat="(roundIndex, round) in rounds">
+		<td class="col-xs-4">
+			<input type="text" class="form-control" ng-model="round.name" ng-blur="updateRound(round)">
+		</td>
+		<td class="col-xs-3">
+			<div class="form-group col-xs-6">
+				<input type="text" size="10" class="form-control" ng-model="round.end_time" placeholder="Date" ng-change="updateRound(round)" bs-datepicker>
+			</div>
+			<div class="form-group col-xs-6">
+				<input type="text" size="8" class="form-control" ng-model="round.end_time" data-minute-step="1" placeholder="Time" ng-change="updateRound(round)" bs-timepicker>
+			</div>
+		</td>
+		<td>
+			<multiselect multiple="true" ng-model="round.teams" multiple ng-change="updateRound(round)" options="team as team.name for team in teams" title="Choose the teams"></multiselect>
+		</td>
+		<td>
+			<multiselect multiple="true" ng-model="round.deaths" multiple ng-change="updateRound(round)" options="death as death.toString() for death in deaths" title="Choose the deaths"></multiselect>
+		</td>
+	</tr>
+</table>
+
+<div class="row">
+	<div class="col-md-12">
+		<a href="javascript:void(0)" ng-click="newRound()">
+			<span class="glyphicon glyphicon-plus"></span> Add a new round
+		</a>
+	</div>
+</div>

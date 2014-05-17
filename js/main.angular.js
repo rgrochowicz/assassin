@@ -68,6 +68,23 @@ app.factory('Resources', ['$resource', function($resource) {
 			}
 		}
 	});
+	var Round = $resource('/public/round/:id', {id:'@id'}, {
+		query: {
+			isArray: true,
+			transformResponse: function(data, headersGetter) {
+				var objs = JSON.parse(data).objects;
+				objs.forEach(function(e, i) {
+					e.teams.forEach(function(mE, mI) {
+						e.teams[mI] = new Team(mE);
+					});
+					e.end_time_parsed = Date.parse(e.end_time);
+					console.log(e);
+				});
+				return objs;
+			}
+		},
+		update: {method: 'PUT', headers: {'Content-Type': 'application/json'}}
+	});
 	var Death = $resource('/public/death/:id', {id:'@id'}, {
 		query: {
 			isArray: true,
@@ -80,6 +97,7 @@ app.factory('Resources', ['$resource', function($resource) {
 	return {
 		Member: Member,
 		Team: Team,
+		Round: Round,
 		Death: Death
 	}
 }]);
@@ -118,6 +136,8 @@ app.factory('Graphs', [function() {
 		  .scale(y)
 		  .orient("left")
 		  .ticks(10);
+
+		d3.select("#member-graph svg").remove();
 
 		var svg = d3.select("#member-graph").append("svg")
 		  .attr("width", "100%")
@@ -226,6 +246,8 @@ app.factory('Graphs', [function() {
 		  .orient("left")
 		  .ticks(2);
 
+		d3.select("#team-graph svg").remove();
+
 		var svg = d3.select("#team-graph").append("svg")
 		  .attr("width", "100%")
 		  .attr("height", "100%")
@@ -305,6 +327,8 @@ app.factory('Graphs', [function() {
 		    .angle(function(d) { return d.x / 180 * Math.PI; });
 
 		// Chrome 15 bug: <http://code.google.com/p/chromium/issues/detail?id=98951>
+		d3.select("#outcomes div").remove();
+
 		var div = d3.select("#outcomes").append("div")
 		    .style("width", "100%")
 		    .style("height", "100%")
@@ -427,6 +451,8 @@ app.factory('Graphs', [function() {
 		    .linkDistance(75)
 		    .size([width, height]);
 
+		d3.select("#relationships div").remove();
+
 		var div = d3.select("#relationships").append("div")
 		    .style("width", "100%")
 		    .style("height", "100%")
@@ -525,16 +551,39 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
 
 
 
-		$scope.teams = Resources.Team.query();
-		$scope.deaths = Resources.Death.query();
+		$scope._teams = Resources.Team.query();
+		$scope._deaths = Resources.Death.query();
+		$scope.rounds = Resources.Round.query();
+
+		$scope.teams = [];
+		$scope.deaths = [];
+
 		$scope.members = [];
-		$scope.sanitizedTeams = [];
 
-		$scope.endTimeString = "May 14, 2014 11:59:59 PM EDT";
-		$scope.endTime = Date.parse($scope.endTimeString);
+		$scope.$on('timer-tick', function(event, args) {
+			$scope.currentDate = _.now();
+		});
 
-		$scope.getPromise = $q.all([$scope.teams.$promise, $scope.deaths.$promise]).then(function() {
+		$scope.getPromise = $q.all([$scope._teams.$promise, $scope._deaths.$promise, $scope.rounds.$promise]).then(function() {
 
+			$scope.currentRound = _.last($scope.rounds);
+
+		});
+
+		$scope.$watch("currentRound", function(newVal, oldVal) {
+			if(newVal) $scope.refreshData();
+		});
+
+		$scope.refreshData = function() {
+
+
+			$scope.teams = _($scope.currentRound.teams).pluck('id').map(function(teamId) {
+				return _(_($scope._teams).find({id: teamId})).clone();
+			}).value();
+
+			$scope.deaths = _($scope.currentRound.deaths).pluck('id').map(function(deathId) {
+				return _(_($scope._deaths).find({id: deathId})).clone();
+			}).value();
 
 			var topElement = {
 				parent: null,
@@ -581,6 +630,8 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
 
 						var killerNode = _.find(memberElements, { id: killer.id });
 						var targetNode = _.find(memberElements, { id: target.id });
+
+						if(!killerNode || !targetNode) return;
 
 						killerNode.kills.push(targetNode);
 						targetNode.killers.push(killerNode);
@@ -638,8 +689,7 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
 				return Math.min($(this).width(), 800);
 			});
 
-
-		});
+		}
 
 	}
 

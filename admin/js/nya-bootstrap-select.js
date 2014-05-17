@@ -30,6 +30,8 @@ angular.module('nya.bootstrap.select',[])
         // prevent selectDirective render an unknownOption.
         selectCtrl.renderUnknownOption = angular.noop;
         var optionArray = [];
+
+
         scope.$watch(function optionDOMWatch(){
           // check every option if has changed.
           var optionElements = $(element).find('option');
@@ -114,7 +116,7 @@ angular.module('nya.bootstrap.select',[])
 
         function indexInArray(value, array) {
           for(var i = 0; i < array.length; i++) {
-            if(angular.equals(value, array[i])) {
+            if(angular.equals(value, array[i]) || (value.id && array[i].id && value.id == array[i].id)) {
               return i;
             }
           }
