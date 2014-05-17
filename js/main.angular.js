@@ -553,10 +553,10 @@ app.filter('nameJoin', function() {
 
 var appControllers = angular.module('assassinAppControllers', []);
 
-appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs',
-	function($scope, Resources, $q, Graphs) {
+appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$anchorScroll',
+	function($scope, Resources, $q, Graphs, $anchorScroll) {
 
-
+		$anchorScroll();
 
 		$scope._teams = Resources.Team.query();
 		$scope._deaths = Resources.Death.query();
