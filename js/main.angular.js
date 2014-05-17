@@ -45,6 +45,19 @@ function stringify(obj, fn, spaces, decycle) {
 }
 
 
+stringify = _.memoize(stringify);
+
+//returns a map with the id as a key and the object as the value
+function idLookup(arr) {
+	var result = {};
+	_(arr).forEach(function(entry) {
+		result[entry.id] = entry;
+	})
+	return result;
+}
+
+_.mixin({ 'idLookup': idLookup });
+
 
 app.factory('Resources', ['$resource', function($resource) {
 	var Member = $resource('/public/member/:id', {id:'@id'}, {
@@ -544,13 +557,6 @@ app.filter('partition', function() {
 	return filter;
 });
 
-app.filter('nameJoin', function() {
-	return function(input) {
-
-		return 
-	}
-})
-
 var appControllers = angular.module('assassinAppControllers', []);
 
 appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$anchorScroll',
@@ -574,6 +580,8 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$
 		$scope.getPromise = $q.all([$scope._teams.$promise, $scope._deaths.$promise, $scope.rounds.$promise]).then(function() {
 
 			$scope.currentRound = _.last($scope.rounds);
+			$scope.teamLookup = _($scope._teams).idLookup().value()
+			$scope.deathLookup = _($scope._deaths).idLookup().value()
 
 		});
 
@@ -597,19 +605,16 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$
 			} else {
 				return null;
 			}
-
-			
 		}
 
 		$scope.refreshData = function() {
 
-
 			$scope.teams = _($scope.currentRound.teams).pluck('id').map(function(teamId) {
-				return _(_($scope._teams).find({id: teamId})).clone();
+				return _($scope.teamLookup[teamId]).clone();
 			}).value();
 
 			$scope.deaths = _($scope.currentRound.deaths).pluck('id').map(function(deathId) {
-				return _(_($scope._deaths).find({id: deathId})).clone();
+				return _($scope.deathLookup[deathId]).clone();
 			}).value();
 
 			var topElement = {
@@ -650,13 +655,15 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$
 
 			});
 
+			var memberLookup = _(memberElements).idLookup().value();
+
 			var links = [];
 			_($scope.deaths).each(function(death, deathIndex) {
 				_(death.killers).each(function(killer, killerIndex) {
 					_(death.targets).each(function(target, targetIndex) {
 
-						var killerNode = _.find(memberElements, { id: killer.id });
-						var targetNode = _.find(memberElements, { id: target.id });
+						var killerNode = memberLookup[killer.id]
+						var targetNode = memberLookup[target.id]
 
 						if(!killerNode || !targetNode) return;
 
@@ -698,12 +705,13 @@ appControllers.controller('MainCtrl', ['$scope', 'Resources', '$q', 'Graphs', '$
 			Graphs.drawOutcomeCircle(topElement, links);
 
 			var teamCopy = _($scope.teams).map(function(team, teamIndex) { return _(team).clone(); }).clone();
+			var teamCopyLookup = _(teamCopy).idLookup().value();
 			var teamRelationships = [];
 
 			_(teamCopy).forEach(function(team, teamIndex) {
 				_(team.kills).pluck('team').uniq().forEach(function(target, targetIndex) {
 					teamRelationships.push({
-						source: _(teamCopy).find({id:target.id}),
+						source: teamCopyLookup[target.id],
 						target: team
 					});
 				})
